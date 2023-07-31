@@ -14,8 +14,8 @@ gem 'rspec', '~> 3.11'
 
 gem 'rainbow', '~> 3.1'
 
-gem "rackup", "~> 1.0"
+gem 'rackup', '~> 1.0'
 
-gem "bcrypt", "~> 3.1"
+gem 'bcrypt', '~> 3.1'
 
-gem "mail", "~> 2.8"
+gem 'mail', '~> 2.8'

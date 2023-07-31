@@ -14,19 +14,19 @@ class DatabaseConnection
   using Rainbow
 
   def self.connect
-    if ENV['DATABASE_URL'] != nil
+    unless ENV['DATABASE_URL'].nil?
       @connection = PG.connect(ENV['DATABASE_URL'])
       return
     end
-    
+
     @host = '127.0.0.1'
 
-    if ENV['ENV'] == 'test'
-      @database_name = 'makersbnb_test'
-    else
-      @database_name = 'makersbnb'
-    end
-    
+    @database_name = if ENV['ENV'] == 'test'
+                       'makersbnb_test'
+                     else
+                       'makersbnb'
+                     end
+
     puts "Connecting to database `#{@database_name}`...".blue unless test_mode?
 
     if test_mode? && !@database_name.end_with?('_test')

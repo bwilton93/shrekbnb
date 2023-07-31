@@ -32,7 +32,7 @@ RSpec.describe ListingRepository do
       listing.price = 50
       listing.user_id = 1
 
-      expect{ repo.create(listing) }.to raise_error "Listing already exists"
+      expect { repo.create(listing) }.to raise_error 'Listing already exists'
     end
 
     it 'fails if missing input value' do
@@ -42,7 +42,7 @@ RSpec.describe ListingRepository do
       listing.listing_description = 'New description'
       listing.price = 50
 
-      expect{ repo.create(listing) }.to raise_error "Missing user id"
+      expect { repo.create(listing) }.to raise_error 'Missing user id'
     end
 
     it 'fails if missing input value' do
@@ -53,19 +53,19 @@ RSpec.describe ListingRepository do
       listing.price = 50
       listing.user_id = ''
 
-      expect{ repo.create(listing) }.to raise_error "Missing user id"
+      expect { repo.create(listing) }.to raise_error 'Missing user id'
     end
   end
 
   context '#all method' do
-    it 'returns all current listings' do 
+    it 'returns all current listings' do
       repo = ListingRepository.new
       listings = repo.all
       expect(listings.length).to eq 2
 
       expect(listings.first.id).to eq 1
-      expect(listings.first.listing_name).to eq("Swamp")
-      expect(listings.first.listing_description).to eq("Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!")
+      expect(listings.first.listing_name).to eq('Swamp')
+      expect(listings.first.listing_description).to eq('Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!')
       expect(listings.first.price).to eq(69)
       expect(listings.first.total_requests).to eq(3)
     end
@@ -77,7 +77,7 @@ RSpec.describe ListingRepository do
       requests = repo.total_requests(1)
       expect(requests).to eq 3
     end
-    
+
     it 'returns 0 if no requests found' do
       repo = ListingRepository.new
       requests = repo.total_requests(2)
@@ -90,35 +90,35 @@ RSpec.describe ListingRepository do
       expect(requests).to eq 0
     end
   end
-  
+
   context '#all_by_id method' do
     it 'returns all listings hosted by an id' do
       repo = ListingRepository.new
       listings = repo.all_by_id(1)
       expect(listings.length).to eq 1
-      
+
       expect(listings.first.listing_name).to eq 'Swamp'
-      expect(listings.first.listing_description).to eq("Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!")
+      expect(listings.first.listing_description).to eq('Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!')
       expect(listings.first.price).to eq(69)
     end
   end
 
-  context "#find method" do
-    it "finds listing by id" do
+  context '#find method' do
+    it 'finds listing by id' do
       repo = ListingRepository.new
       listing = repo.find(1)
 
       expect(listing.id).to eq 1
-      expect(listing.listing_name).to eq("Swamp")
-      expect(listing.listing_description).to eq("Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!")
+      expect(listing.listing_name).to eq('Swamp')
+      expect(listing.listing_description).to eq('Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!')
       expect(listing.price).to eq(69)
-      expect(listing.host_name).to eq("Shrek")
+      expect(listing.host_name).to eq('Shrek')
     end
 
     it 'fails when searching for listing which doesnt exist' do
       repo = ListingRepository.new
 
-      expect{ listing = repo.find(6) }.to raise_error "Listing does not exist"
+      expect { listing = repo.find(6) }.to raise_error 'Listing does not exist'
     end
   end
 end

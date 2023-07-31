@@ -26,13 +26,13 @@ RSpec.describe UserRepo do
       user = repo.find_by_email('shreky@swamp.com')
       expect(user).to eq false
     end
-    
+
     it 'returns a single user from an id' do
       repo = UserRepo.new
       user = repo.find_by_id('1')
       expect(user.name).to eq 'Shrek'
     end
-    
+
     it 'returns nil if id doesnt exist' do
       repo = UserRepo.new
       user = repo.find_by_id('69')
@@ -48,7 +48,7 @@ RSpec.describe UserRepo do
       new_user.name = 'Muffin Man'
       new_user.email = 'muffinman@drury.lane'
       new_user.password = 'do_you_know_the_muffin_man'
-      
+
       repo.create(new_user)
       expect(repo.all.length).to eq 4
       expect(repo.all.last.name).to eq 'Muffin Man'
@@ -101,7 +101,7 @@ RSpec.describe UserRepo do
       result = repo.check_password(current_id, password)
       expect(result).to eq true
     end
-    
+
     it 'returns false if the password is incorrect' do
       repo = UserRepo.new
       current_id = 1
@@ -117,7 +117,7 @@ RSpec.describe UserRepo do
       email = 'shrek2@newswamp.com'
       name = nil
       result = repo.update(1, email, name)
-      
+
       user = repo.find_by_id('1')
       expect(user.email).to eq 'shrek2@newswamp.com'
     end
@@ -143,7 +143,7 @@ RSpec.describe UserRepo do
       email = nil
       name = 'Shrek but better'
       result = repo.update(1, email, name)
-      
+
       user = repo.find_by_id('1')
       expect(user.name).to eq 'Shrek but better'
     end

@@ -21,7 +21,7 @@ class Mailer
     body = generate_body(email_type)
 
     return 'Email failed to send.' unless subject || body
-    
+
     Mail.deliver do
       to email_address
       from 'Shrek @ MakersBnB'
@@ -29,52 +29,52 @@ class Mailer
       body body
     end
 
-    return "#{email_type} email sent"
+    "#{email_type} email sent"
   end
 
   def generate_subject(email_type)
     case email_type
     when 'signup'
-      return 'Welcome to MakersBnB!'
+      'Welcome to MakersBnB!'
     when 'createlisting'
-      return 'You created a new listing!'
+      'You created a new listing!'
     when 'updatelisting'
-      return 'You updated your listing!'
+      'You updated your listing!'
     when 'bookingrequested'
-      return 'New booking request received!'
+      'New booking request received!'
     when 'confirmrequest'
-      return 'You approved a booking!'
+      'You approved a booking!'
     when 'requestbooking'
-      return 'You requested a new booking!'
+      'You requested a new booking!'
     when 'requestconfirmed'
-      return 'Your booking request has been confirmed!'
+      'Your booking request has been confirmed!'
     when 'requestdenied'
-      return 'Your booking request has been denied.'
+      'Your booking request has been denied.'
     else
-      return false
+      false
     end
   end
-  
+
   def generate_body(email_type)
     case email_type
     when 'signup'
-      return 'Welcome to MakersBnB!'
+      'Welcome to MakersBnB!'
     when 'createlisting'
-      return 'You created a new listing!'
+      'You created a new listing!'
     when 'updatelisting'
-      return 'You updated your listing!'
+      'You updated your listing!'
     when 'bookingrequested'
-      return 'New booking request received!'
+      'New booking request received!'
     when 'confirmrequest'
-      return 'You approved a booking!'
+      'You approved a booking!'
     when 'requestbooking'
-      return 'You requested a new booking!'
+      'You requested a new booking!'
     when 'requestconfirmed'
-      return 'Your booking request has been confirmed!'
+      'Your booking request has been confirmed!'
     when 'requestdenied'
-      return 'Your booking request has been denied.'
+      'Your booking request has been denied.'
     else
-      return false
+      false
     end
   end
 end

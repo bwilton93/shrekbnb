@@ -4,12 +4,13 @@ require 'date'
 
 class ListingRepository
   def create(listing)
-    fail "Listing already exists" if all.map { |current_listings| 
-    current_listings.listing_name }.include?(listing.listing_name)
+    raise 'Listing already exists' if all.map do |current_listings|
+                                        current_listings.listing_name
+                                      end.include?(listing.listing_name)
 
-    fail "Missing user id" if listing.user_id == nil || listing.user_id == ""
+    raise 'Missing user id' if listing.user_id.nil? || listing.user_id == ''
 
-    sql = 'INSERT INTO listings 
+    sql = 'INSERT INTO listings
     (listing_name, listing_description, price, user_id)
     VALUES ($1, $2, $3, $4)'
     params = [
@@ -20,7 +21,7 @@ class ListingRepository
     ]
 
     DatabaseConnection.exec_params(sql, params)
-    return nil
+    nil
   end
 
   def all
@@ -34,7 +35,7 @@ class ListingRepository
     result_set.each do |record|
       listings << record_to_listing(record)
     end
-    return listings
+    listings
   end
 
   def all_by_id(user_id)
@@ -48,7 +49,7 @@ class ListingRepository
     results.each do |record|
       listings << record_to_listing(record)
     end
-    return listings
+    listings
   end
 
   def find(id)
@@ -59,9 +60,9 @@ class ListingRepository
           WHERE listings.id = $1;'
     result_set = DatabaseConnection.exec_params(sql, [id])
 
-    fail "Listing does not exist" if result_set.num_tuples.zero?
-    
-    return record_to_listing(result_set[0])
+    raise 'Listing does not exist' if result_set.num_tuples.zero?
+
+    record_to_listing(result_set[0])
   end
 
   def total_requests(listing_id)
@@ -73,10 +74,11 @@ class ListingRepository
 
     result_set = DatabaseConnection.exec_params(sql, [listing_id])
     return 0 if result_set.first.nil?
+
     result_set.each do |result|
       results << result
     end
-    return results.length
+    results.length
   end
 
   private
@@ -90,6 +92,6 @@ class ListingRepository
     listing.user_id = record['user_id'].to_i
     listing.host_name = record['name']
     listing.total_requests = total_requests(listing.id)
-    return listing
+    listing
   end
 end

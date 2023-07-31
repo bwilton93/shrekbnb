@@ -14,7 +14,7 @@ DatabaseConnection.connect
 
 class Application < Sinatra::Base
   enable :sessions
-  
+
   configure :development do
     register Sinatra::Reloader
   end
@@ -35,11 +35,11 @@ class Application < Sinatra::Base
     new_user.email = params[:email]
     new_user.password = params[:password]
 
-    return erb(:signup) if !repo.create(new_user)
-    
+    return erb(:signup) unless repo.create(new_user)
+
     user = repo.find_by_email(new_user.email)
     session[:user_id] = user.id
-    
+
     send_email_to_self('signup', user.id)
     go_to_homepage
   end
@@ -53,6 +53,7 @@ class Application < Sinatra::Base
 
     @session_id = session[:user_id]
     return erb(:login) if @session_id.nil?
+
     go_to_homepage
   end
 
@@ -70,7 +71,7 @@ class Application < Sinatra::Base
       status 400
       return "We didn't like that... go back to try again!"
     end
-    
+
     begin
       post_listing
     rescue RuntimeError => e
@@ -85,6 +86,7 @@ class Application < Sinatra::Base
 
   get '/account' do
     return erb(:login) if session[:user_id].nil?
+
     id = session[:user_id]
     repo = UserRepo.new
     listing_repo = ListingRepository.new
@@ -94,12 +96,10 @@ class Application < Sinatra::Base
   end
 
   get '/view-requests/listing/:id' do
-    begin
-      go_to_booking_requests
-    rescue RuntimeError => e
-      status 400
-      return e.message
-    end
+    go_to_booking_requests
+  rescue RuntimeError => e
+    status 400
+    return e.message
   end
 
   get '/account-settings' do
@@ -121,8 +121,8 @@ class Application < Sinatra::Base
   post '/update-username-email' do
     @can_update = true
     repo = UserRepo.new
-    params[:name] == "" ? name = nil : name = params[:name]
-    params[:email] == "" ? email = nil : email = params[:email]
+    name = params[:name] == '' ? nil : params[:name]
+    email = params[:email] == '' ? nil : params[:email]
 
     repo.update(session[:user_id], email, name)
     @user = repo.find_by_id(session[:user_id])
@@ -179,9 +179,9 @@ class Application < Sinatra::Base
     end
   end
 
-  post '/book' do 
-    redirect '/login' if session[:user_id] == nil
-    begin 
+  post '/book' do
+    redirect '/login' if session[:user_id].nil?
+    begin
       user_id = session[:user_id].to_i
       date_id = params[:date_id].to_i
       booking = Booking.new
@@ -193,9 +193,9 @@ class Application < Sinatra::Base
       send_to_other_id = repo.fetch_host_id(params[:date_id])
       send_email_to_other('bookingrequested', send_to_other_id)
       return erb(:request_sent)
-    rescue RuntimeError 
+    rescue RuntimeError
       status 400
-      return "Booking already exists, try again."
+      return 'Booking already exists, try again.'
     end
   end
 
@@ -219,14 +219,15 @@ class Application < Sinatra::Base
     listing_repo = ListingRepository.new
     @listings = listing_repo.all
     @session_id = session[:user_id]
-    return erb(:index)
+    erb(:index)
   end
 
   def go_to_booking_requests
     @listing = ListingRepository.new.find(params[:id])
     return erb(:login) if session[:user_id] != @listing.user_id
+
     @requests = BookingRepo.new.find_requests_by_listing_id(params[:id])
-    return erb(:view_requests)
+    erb(:view_requests)
   end
 
   def post_listing
@@ -239,7 +240,7 @@ class Application < Sinatra::Base
     repo.create(listing)
 
     send_email_to_self('createlisting', session[:user_id])
-    return erb(:listing_created)
+    erb(:listing_created)
   end
 
   def add_dates_to_listing
@@ -250,18 +251,19 @@ class Application < Sinatra::Base
     repo.add_dates(id, start_date, end_date)
 
     send_email_to_self('updatelisting', session[:user_id])
-    return erb(:dates_added)
+    erb(:dates_added)
   end
 
   def account_settings_access
     return erb(:login) if session[:user_id].nil?
-    return erb(:account_settings)
+
+    erb(:account_settings)
   end
 
   def find_email(id)
     repo = UserRepo.new
     result = repo.find_by_id(id)
-    return result.email
+    result.email
   end
 
   def send_email_to_self(email_type, user_id)
@@ -274,28 +276,30 @@ class Application < Sinatra::Base
   end
 
   def invalid_listing_params
-    if params['listing_name'] == nil ||
-      params['listing_description'] == nil ||
-      params['price'] == nil
+    if params['listing_name'].nil? ||
+       params['listing_description'].nil? ||
+       params['price'].nil?
       return true
     end
     if params['listing_name'] == '' ||
-      params['listing_description'] == '' ||
-      params['price'] == ''
+       params['listing_description'] == '' ||
+       params['price'] == ''
       return true
     end
-    return false
+
+    false
   end
 
   def invalid_date_params
-    if params['start_date'] == nil ||
-      params['end_date'] == nil
+    if params['start_date'].nil? ||
+       params['end_date'].nil?
       return true
     end
     if params['start_date'] == '' ||
-      params['end_date'] == ''
+       params['end_date'] == ''
       return true
     end
-    return false
+
+    false
   end
 end

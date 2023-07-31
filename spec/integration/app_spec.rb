@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-require "rack/test"
-require_relative "../../app"
-require "json"
+require 'spec_helper'
+require 'rack/test'
+require_relative '../../app'
+require 'json'
 
 describe Application do
   before(:each) do
@@ -22,45 +22,45 @@ describe Application do
   # one test suite for each set of related features),
   # you can duplicate this test file to create a new one.
 
-  context "GET /" do
-    it "should get the homepage" do
-      response = get("/")
+  context 'GET /' do
+    it 'should get the homepage' do
+      response = get('/')
 
       expect(response.status).to eq(200)
     end
 
-    it "shows all listings" do
-      response = get("/")
+    it 'shows all listings' do
+      response = get('/')
 
-      expect(response.body).to include("Property name: Swamp")
-      expect(response.body).to include("Price per night: £69")
+      expect(response.body).to include('Property name: Swamp')
+      expect(response.body).to include('Price per night: £69')
       expect(response.body).to include('<a href="/listing/1">')
 
-      expect(response.body).to include("Property name: Far Far Away Castle")
-      expect(response.body).to include("Price per night: £420")
+      expect(response.body).to include('Property name: Far Far Away Castle')
+      expect(response.body).to include('Price per night: £420')
       expect(response.body).to include('<a href="/listing/2">')
     end
   end
 
-  context "GET /signup" do
-    it "should get the signup page" do
-      response = get("/signup")
+  context 'GET /signup' do
+    it 'should get the signup page' do
+      response = get('/signup')
 
       expect(response.status).to eq 200
-      expect(response.body).to include "<form"
+      expect(response.body).to include '<form'
       expect(response.body).to include '<input type="text" placeholder="Name" required="required" name="name">'
       expect(response.body).to include '<input type="email" placeholder="Email" required="required" name="email">'
       expect(response.body).to include '<input type="password" placeholder="Password" required="required" name="password">'
     end
   end
 
-  context "POST /signup" do
-    it "should create and log in to a new user account" do
+  context 'POST /signup' do
+    it 'should create and log in to a new user account' do
       response = post(
-        "/signup",
-        name: "Dragon",
-        email: "elizabeth@dragonskeep.com",
-        password: "lust_for_donkey",
+        '/signup',
+        name: 'Dragon',
+        email: 'elizabeth@dragonskeep.com',
+        password: 'lust_for_donkey'
       )
 
       expect(response.status).to eq 200
@@ -69,25 +69,25 @@ describe Application do
       expect(response.body).to include 'href="/logout" class="button-link">Log out</a>'
     end
 
-    it "should return to sign up form if email already taken" do
+    it 'should return to sign up form if email already taken' do
       response = post(
-        "/signup",
-        name: "Dragon",
-        email: "donkey@donkey.com",
-        password: "lust_for_donkey",
+        '/signup',
+        name: 'Dragon',
+        email: 'donkey@donkey.com',
+        password: 'lust_for_donkey'
       )
 
       expect(response.status).to eq 200
-      expect(response.body).to include "<form"
+      expect(response.body).to include '<form'
       expect(response.body).to include '<input type="text" placeholder="Name" required="required" name="name">'
       expect(response.body).to include '<input type="email" placeholder="Email" required="required" name="email">'
       expect(response.body).to include '<input type="password" placeholder="Password" required="required" name="password">'
     end
   end
 
-  context "GET /login" do
-    it "should show the login form" do
-      response = get("/login")
+  context 'GET /login' do
+    it 'should show the login form' do
+      response = get('/login')
 
       expect(response.status).to eq 200
       expect(response.body).to include '<input type="text" placeholder="Email" required="required" name="email">'
@@ -95,12 +95,12 @@ describe Application do
     end
   end
 
-  context "POST /login" do
-    it "should log in" do
+  context 'POST /login' do
+    it 'should log in' do
       response = post(
-        "/login",
-        email: "shrek@swamp.com",
-        password: "fiona_lover420",
+        '/login',
+        email: 'shrek@swamp.com',
+        password: 'fiona_lover420'
       )
 
       expect(response.status).to eq 200
@@ -110,11 +110,11 @@ describe Application do
       expect(response.body).to include 'href="/logout" class="button-link">Log out</a>'
     end
 
-    it "should fail to log in if password is wrong" do
+    it 'should fail to log in if password is wrong' do
       response = post(
-        "/login",
-        email: "shrek@swamp.com",
-        password: "fiona_lover42",
+        '/login',
+        email: 'shrek@swamp.com',
+        password: 'fiona_lover42'
       )
 
       expect(response.status).to eq 200
@@ -123,9 +123,9 @@ describe Application do
     end
   end
 
-  context "GET /logout" do
-    it "logs out" do
-      response = get("/logout")
+  context 'GET /logout' do
+    it 'logs out' do
+      response = get('/logout')
 
       expect(response.status).to eq 200
 
@@ -135,9 +135,9 @@ describe Application do
     end
   end
 
-  context "GET /listing/new" do
-    it "contains a form for a new listing" do
-      response = get "/listing/new"
+  context 'GET /listing/new' do
+    it 'contains a form for a new listing' do
+      response = get '/listing/new'
 
       expect(response.status).to eq 200
       expect(response.body).to include('<form action="/listing/new" method="POST">')
@@ -145,88 +145,88 @@ describe Application do
     end
   end
 
-  context "POST /listing/new" do
-    it "adds a new listing when user logged in" do
+  context 'POST /listing/new' do
+    it 'adds a new listing when user logged in' do
       session = { user_id: 1 }
       params = {
-        listing_name: "New Listing",
-        listing_description: "Description",
-        price: 0,
+        listing_name: 'New Listing',
+        listing_description: 'Description',
+        price: 0
       }
 
-      response = post("/listing/new", params, "rack.session" => session)
+      response = post('/listing/new', params, 'rack.session' => session)
 
       expect(response.status).to eq 200
-      expect(response.body).to include("<p>Your new listing has been added!</p>")
+      expect(response.body).to include('<p>Your new listing has been added!</p>')
     end
 
-    it "runs error if no user logged in" do
+    it 'runs error if no user logged in' do
       session = { user_id: nil }
       params = {
-        listing_name: "New Listing",
-        listing_description: "Description",
-        price: 0,
+        listing_name: 'New Listing',
+        listing_description: 'Description',
+        price: 0
       }
 
-      response = post("/listing/new", params, "rack.session" => session)
+      response = post('/listing/new', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
       expect(response.body).to include('Sorry, try <a href="/login">logging in</a> to add a listing!')
     end
 
-    it "runs error if listing already exists" do
+    it 'runs error if listing already exists' do
       session = { user_id: nil }
       params = {
-        listing_name: "Swamp",
-        listing_description: "Description",
-        price: 0,
+        listing_name: 'Swamp',
+        listing_description: 'Description',
+        price: 0
       }
 
-      response = post("/listing/new", params, "rack.session" => session)
+      response = post('/listing/new', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
       expect(response.body).to include('This listing already exists, try again!')
     end
 
-    it "runs error if parameters not valid(empty string)" do
+    it 'runs error if parameters not valid(empty string)' do
       session = { user_id: 1 }
       params = {
-        listing_name: "",
-        listing_description: "",
-        price: "hello?",
+        listing_name: '',
+        listing_description: '',
+        price: 'hello?'
       }
-      response = post("/listing/new", params, "rack.session" => session)
+      response = post('/listing/new', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
       expect(response.body).to eq("We didn't like that... go back to try again!")
     end
 
-    it "runs error if parameters not valid(nil)" do
+    it 'runs error if parameters not valid(nil)' do
       session = { user_id: 1 }
       params = {
-        listing_description: "",
-        price: "hello?",
+        listing_description: '',
+        price: 'hello?'
       }
-      response = post("/listing/new", params, "rack.session" => session)
+      response = post('/listing/new', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
       expect(response.body).to eq("We didn't like that... go back to try again!")
     end
   end
-  
-  context "GET /listing/:id" do
-    it "displays listing details of listing with id 1" do
-      response = get("/listing/1")
+
+  context 'GET /listing/:id' do
+    it 'displays listing details of listing with id 1' do
+      response = get('/listing/1')
 
       expect(response.status).to eq 200
-      expect(response.body).to include "Swamp"
-      expect(response.body).to include "Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!"
-      expect(response.body).to include "Hosted by: Shrek"
-      expect(response.body).to include "Price per night: £69"
+      expect(response.body).to include 'Swamp'
+      expect(response.body).to include 'Lovely swamp. Shrek lives here. Scenic outhouse. Donkey not included!'
+      expect(response.body).to include 'Hosted by: Shrek'
+      expect(response.body).to include 'Price per night: £69'
     end
 
     it 'contains a drop down with all available dates' do
-      response = get("/listing/1")
+      response = get('/listing/1')
 
       expect(response.status).to eq 200
 
@@ -235,7 +235,6 @@ describe Application do
       expect(response.body).to include('<select name="date_id" id="available-dates">')
       expect(response.body).to include('<option value="1">2023-05-12</option>')
       expect(response.body).to include('<option value="2">2023-05-13</option>')
-
     end
   end
 
@@ -245,7 +244,7 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
+      )
       response = get('/account')
 
       expect(response.status).to eq 200
@@ -283,7 +282,7 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
+      )
 
       response = get('/view-requests/listing/1')
 
@@ -310,7 +309,7 @@ describe Application do
         '/login',
         email: 'fiona@farfaraway.com',
         password: 'save_me9001'
-        )
+      )
 
       response = get('/view-requests/listing/2')
       expect(response.status).to eq 200
@@ -333,7 +332,7 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
+      )
 
       response = get('/account-settings')
 
@@ -357,11 +356,10 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
-      
+      )
+
       response = post('/account-settings',
-        password: 'fiona_lover420'
-        )
+                      password: 'fiona_lover420')
 
       expect(response.status).to eq 200
       expect(response.body).to include '<h2>Account Settings</h2>'
@@ -382,11 +380,10 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
-      
+      )
+
       response = post('/account-settings',
-        password: 'incorrect_password'
-        )
+                      password: 'incorrect_password')
 
       expect(response.status).to eq 200
       expect(response.body).to include "action='/account-settings' method='POST'>"
@@ -400,7 +397,7 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
+      )
 
       response = get('/update-username-email')
 
@@ -479,7 +476,7 @@ describe Application do
         '/login',
         email: 'shrek@swamp.com',
         password: 'fiona_lover420'
-        )
+      )
 
       response = get('/update-password')
 
@@ -516,8 +513,7 @@ describe Application do
       expect(response.status).to eq 200
 
       response = post('/account-settings',
-        password: 'lust_for_fiona'
-      )
+                      password: 'lust_for_fiona')
 
       expect(response.status).to eq 200
       expect(response.body).to include '<h2>Account Settings</h2>'
@@ -550,8 +546,7 @@ describe Application do
       expect(response.status).to eq 200
 
       response = post('/account-settings',
-        password: 'lust_for_fiona'
-      )
+                      password: 'lust_for_fiona')
 
       expect(response.status).to eq 200
       expect(response.body).to include "action='/account-settings' method='POST'>"
@@ -575,21 +570,20 @@ describe Application do
       expect(response.status).to eq 200
 
       response = post('/account-settings',
-        password: 'lust_for_fiona'
-      )
+                      password: 'lust_for_fiona')
 
       expect(response.status).to eq 200
       expect(response.body).to include "action='/account-settings' method='POST'>"
       expect(response.body).to include "<input type='password' required='required' name='password'>"
     end
   end
-  
+
   context 'GET /available_dates/:id' do
     it 'returns 200 OK with a date form' do
       response = get('/available_dates/1')
 
       expect(response.status).to eq 200
-      expect(response.body).to include "<h2>Add dates for Swamp</h2>"
+      expect(response.body).to include '<h2>Add dates for Swamp</h2>'
       expect(response.body).to include '<form action="/available_dates/1" method="POST">'
       expect(response.body).to include '<input type="date" name="start_date" />'
       expect(response.body).to include '<input type="date" name="end_date" />'
@@ -599,44 +593,44 @@ describe Application do
   context 'POST /available_dates/:id' do
     it 'returns 200 OK with confirmation message' do
       session = { user_id: 1 }
-      params = {start_date: '2023-11-05', end_date: '2023-12-05'}
-      response = post('/available_dates/1', params, "rack.session" => session)
-      
+      params = { start_date: '2023-11-05', end_date: '2023-12-05' }
+      response = post('/available_dates/1', params, 'rack.session' => session)
+
       expect(response.status).to eq 200
-      expect(response.body).to include "<h2>Date successfully added</h2>"
+      expect(response.body).to include '<h2>Date successfully added</h2>'
     end
 
     it 'redirects to login page if wrong user logged in' do
       session = { user_id: 2 }
-      params = {start_date: '2023-11-05', end_date: '2023-12-05'}
-      response = post('/available_dates/1', params, "rack.session" => session)
-      
-      expect(response.body).not_to include "<h2>Date successfully added</h2>"
+      params = { start_date: '2023-11-05', end_date: '2023-12-05' }
+      response = post('/available_dates/1', params, 'rack.session' => session)
+
+      expect(response.body).not_to include '<h2>Date successfully added</h2>'
       expect(response.status).to eq 302
     end
 
     it 'returns 400 error if end date before start date' do
       session = { user_id: 1 }
-      params = {start_date: '2023-11-05', end_date: '2023-10-05'}
-      response = post('/available_dates/1', params, "rack.session" => session)
+      params = { start_date: '2023-11-05', end_date: '2023-10-05' }
+      response = post('/available_dates/1', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
-      expect(response.body).to eq "End date must be after start date"
+      expect(response.body).to eq 'End date must be after start date'
     end
 
     it 'returns 400 error if end date before start date' do
       session = { user_id: 1 }
-      params = {start_date: '2023-01-05', end_date: '2023-10-05'}
-      response = post('/available_dates/1', params, "rack.session" => session)
+      params = { start_date: '2023-01-05', end_date: '2023-10-05' }
+      response = post('/available_dates/1', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
-      expect(response.body).to eq "Start date must not be in the past"
+      expect(response.body).to eq 'Start date must not be in the past'
     end
 
     it 'runs error if parameters not valid(empty string)' do
       session = { user_id: 1 }
-      params = {start_date: '', end_date: '2023-10-05'}
-      response = post('/available_dates/1', params, "rack.session" => session)
+      params = { start_date: '', end_date: '2023-10-05' }
+      response = post('/available_dates/1', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
       expect(response.body).to eq "We didn't like that... go back to try again!"
@@ -644,8 +638,8 @@ describe Application do
 
     it 'runs error if parameters not valid(nil)' do
       session = { user_id: 1 }
-      params = {end_date: '2023-10-05'}
-      response = post('/available_dates/1', params, "rack.session" => session)
+      params = { end_date: '2023-10-05' }
+      response = post('/available_dates/1', params, 'rack.session' => session)
 
       expect(response.status).to eq 400
       expect(response.body).to eq "We didn't like that... go back to try again!"
@@ -655,23 +649,23 @@ describe Application do
   context 'POST /book' do
     it 'requests to book when user is logged in' do
       session = { user_id: 1 }
-      response = post('/book', { date_id: 1 }, "rack.session" => session)
+      response = post('/book', { date_id: 1 }, 'rack.session' => session)
 
       expect(response.status).to eq 200
-      expect(response.body).to include "Booking request successfully added!"
+      expect(response.body).to include 'Booking request successfully added!'
     end
 
     it 'booking already exists' do
       session = { user_id: 3 }
-      response = post('/book', { date_id: 1 }, "rack.session" => session)
+      response = post('/book', { date_id: 1 }, 'rack.session' => session)
 
       expect(response.status).to eq 400
-      expect(response.body).to eq "Booking already exists, try again."
+      expect(response.body).to eq 'Booking already exists, try again.'
     end
 
     it 'redirects to login page when not logged in' do
       session = { user_id: nil }
-      response = post('/book', { date_id: 1 }, "rack.session" => session)
+      response = post('/book', { date_id: 1 }, 'rack.session' => session)
 
       expect(response.status).to eq 302
     end
@@ -680,9 +674,9 @@ describe Application do
   context 'POST /confirm' do
     it 'returns a booking confirmation message to the host' do
       session = { user_id: 1 }
-      response = post('/confirm', {user_id: 3, date_id: 1}, "rack.session" => session)
+      response = post('/confirm', { user_id: 3, date_id: 1 }, 'rack.session' => session)
       expect(response.status).to eq 200
-      expect(response.body).to include "Booking confirmed."
+      expect(response.body).to include 'Booking confirmed.'
     end
   end
 end

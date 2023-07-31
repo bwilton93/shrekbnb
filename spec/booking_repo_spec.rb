@@ -28,9 +28,9 @@ RSpec.describe BookingRepo do
       expect(repo.find_requests_by_listing_id(3)).to eq false
     end
   end
-  
+
   context '#all method' do
-    it 'returns all current booking requests' do 
+    it 'returns all current booking requests' do
       repo = BookingRepo.new
       bookings = repo.all
       expect(bookings.length).to eq 3
@@ -38,13 +38,13 @@ RSpec.describe BookingRepo do
       expect(bookings.first.booking_user_id).to eq(3)
       expect(bookings.first.date_id).to eq(1)
       expect(bookings.first.listing_id).to eq(1)
-      expect(bookings.first.booking_user_name).to eq("Donkey")
-      expect(bookings.first.date).to eq("2023-05-12")
+      expect(bookings.first.booking_user_name).to eq('Donkey')
+      expect(bookings.first.date).to eq('2023-05-12')
       expect(bookings.last.booking_user_id).to eq(3)
       expect(bookings.last.date_id).to eq(2)
       expect(bookings.last.listing_id).to eq(1)
-      expect(bookings.last.booking_user_name).to eq("Donkey")
-      expect(bookings.last.date).to eq("2023-05-13")
+      expect(bookings.last.booking_user_name).to eq('Donkey')
+      expect(bookings.last.date).to eq('2023-05-13')
     end
   end
 
@@ -66,7 +66,7 @@ RSpec.describe BookingRepo do
       booking = Booking.new
       booking.booking_user_id = 3
       booking.date_id = 1
-      expect{ repo.create(booking) }.to raise_error "Booking already exists, try again."
+      expect { repo.create(booking) }.to raise_error 'Booking already exists, try again.'
     end
   end
 
@@ -91,7 +91,7 @@ RSpec.describe BookingRepo do
     it 'returns error if date is already booked' do
       repo = BookingRepo.new
       repo.confirm(3, 1)
-      expect{ repo.confirm(3, 1) }.to raise_error "Booking is already confirmed."
+      expect { repo.confirm(3, 1) }.to raise_error 'Booking is already confirmed.'
     end
   end
 
@@ -120,7 +120,7 @@ RSpec.describe BookingRepo do
     it 'returns error when no requests found' do
       repo = BookingRepo.new
 
-      expect { repo.delete_requests(3) }.to raise_error "No requests found."
+      expect { repo.delete_requests(3) }.to raise_error 'No requests found.'
     end
   end
 

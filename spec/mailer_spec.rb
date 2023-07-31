@@ -6,37 +6,37 @@ RSpec.describe Mailer do
       mailer = Mailer.new
       expect(mailer.send('signup', 'email@email.com')).to eq 'signup email sent'
     end
-    
+
     it 'sends the createlisting email' do
       mailer = Mailer.new
       expect(mailer.send('createlisting', 'email@email.com')).to eq 'createlisting email sent'
     end
-    
+
     it 'sends the updatelisting email' do
       mailer = Mailer.new
       expect(mailer.send('updatelisting', 'email@email.com')).to eq 'updatelisting email sent'
     end
-    
+
     it 'sends the bookingrequested email' do
       mailer = Mailer.new
       expect(mailer.send('bookingrequested', 'email@email.com')).to eq 'bookingrequested email sent'
     end
-    
+
     it 'sends the confirmrequest email' do
       mailer = Mailer.new
       expect(mailer.send('confirmrequest', 'email@email.com')).to eq 'confirmrequest email sent'
     end
-    
+
     it 'sends the requestbooking email' do
       mailer = Mailer.new
       expect(mailer.send('requestbooking', 'email@email.com')).to eq 'requestbooking email sent'
     end
-    
+
     it 'sends the requestconfirmed email' do
       mailer = Mailer.new
       expect(mailer.send('requestconfirmed', 'email@email.com')).to eq 'requestconfirmed email sent'
     end
-    
+
     it 'sends the requestdenied email' do
       mailer = Mailer.new
       expect(mailer.send('requestdenied', 'email@email.com')).to eq 'requestdenied email sent'
@@ -96,13 +96,13 @@ RSpec.describe Mailer do
       subject = mailer.generate_subject('requestdenied')
       expect(subject).to eq 'Your booking request has been denied.'
     end
-    
+
     it 'returns false if email_type does not exist' do
       mailer = Mailer.new
       expect(mailer.generate_subject('subject not present')).to eq false
     end
   end
-  
+
   context 'generate_body method' do
     it 'generates the body of the email for sign up' do
       mailer = Mailer.new
