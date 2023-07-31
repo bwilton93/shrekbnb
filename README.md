@@ -23,3 +23,22 @@ http://127.0.0.1:port
 # To get details on test coverage:
 rspec
 ```
+
+## Built with
+#### Main languages used:
+* Ruby
+  * Object-Oriented lanugage used for to handle majority of our back-end logic
+* HTML/CSS
+  * Markup language used for documents designed to be displayed in the web browser
+* Sinatra
+  * Domain-specific language used to map incoming web requests to blocks of Ruby Code
+#### Ruby gems:
+* Webrick
+  * HTTP server toolkit allowing logging of server operations and HTTP access.
+* Bcrypt
+  * Used for password encryption
+* PG
+  * Used to interface with PostgreSQL RDBMS
+#### Testing environment:
+* RSpec
+  * Testing tool for Ruby, created for Test Driven Development
