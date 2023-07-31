@@ -15,7 +15,7 @@ rackup
 
 # Take note of port provided in 'INFO  WEBrick::HTTPServer#start: pid=26468 port=9292' line
 
-# RuBnB can be now accessed through your browser using 
+# Shrekbnb can be now accessed through your browser using 
 http://localhost:port
 # or
 http://127.0.0.1:port
