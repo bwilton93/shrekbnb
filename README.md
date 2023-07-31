@@ -6,12 +6,17 @@ createdb makersbnb_test
 
 # Install gems
 bundle install
-gem install bcrypt
-gem install simplecov
 
-# Run the tests
-rspec
-
-# Run the server (better to do this in a separate terminal).
+# Run the server (might need to use different terminal).
 rackup
+
+# Take note of port provided in 'INFO  WEBrick::HTTPServer#start: pid=26468 port=9292' line
+
+# RuBnB can be now accessed through your browser using 
+http://localhost:port
+# or
+http://127.0.0.1:port
+
+# To get details on test coverage:
+rspec
 ```
