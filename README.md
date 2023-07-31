@@ -4,6 +4,9 @@
 # Create the test database
 createdb makersbnb_test
 
+# Create the main database
+createdb makersbnb
+
 # Install gems
 bundle install
 
